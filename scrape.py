@@ -1,4 +1,3 @@
-
 import functions_framework
 import requests
 import json
@@ -241,7 +240,7 @@ def clean_fare(fare_str):
         return 0.0
     
 
-def format_price_data_for_csv(origin, destination, raw_data):
+def format_price_data_for_csv(origin, destination, raw_data, timestamp, formatted_datetime):
 
     formatted_data = []
     try:
@@ -261,6 +260,8 @@ def format_price_data_for_csv(origin, destination, raw_data):
                 fare = clean_fare(fares.get('fare', '0'))
    
                 row = {
+                    'timestamp': timestamp,
+                    'datetime': formatted_datetime,
                     'origin': origin,
                     'destination': destination,
                     'tier': tier.get('title', ''),
@@ -381,7 +382,7 @@ def start():
         return
     
     timestamp = int(time.time())
-    formatted_datetime = datetime.now().strftime('%Y%m%d_%H%M%S')
+    formatted_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     csv_filename = f"{timestamp}_{formatted_datetime}.csv"
     
     all_price_data = []
@@ -404,7 +405,7 @@ def start():
             print("Failed to get price data")
             continue
         
-        formatted_data = format_price_data_for_csv(origin_addr, dest_addr, raw_data)
+        formatted_data = format_price_data_for_csv(origin_addr, dest_addr, raw_data, timestamp, formatted_datetime)
         all_price_data.extend(formatted_data)
         
         #time.sleep(2)
