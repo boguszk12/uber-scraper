@@ -381,8 +381,10 @@ def start():
         print("No locations found in locations.txt")
         return
     
-    timestamp = int(time.time())
-    formatted_datetime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    current_time = time.time()
+    timestamp = int(current_time) + 7200  # Adding 2 hours (7200 seconds)
+    formatted_datetime = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d %H:%M:%S')
+    
     csv_filename = f"{timestamp}_{formatted_datetime}.csv"
     
     all_price_data = []
